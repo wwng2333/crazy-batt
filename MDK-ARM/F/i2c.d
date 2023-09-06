@@ -41,4 +41,5 @@
   C:\Keil_ARM\ARM\ARMCLANG\Bin\..\include\stdlib.h \
   C:\Keil_ARM\ARM\ARMCLANG\Bin\..\include\stdarg.h \
   C:\Keil_ARM\ARM\ARMCLANG\Bin\..\include\stdio.h \
+  C:\Keil_ARM\ARM\ARMCLANG\Bin\..\include\string.h \
   C:\Keil_ARM\ARM\ARMCLANG\Bin\..\include\stdbool.h

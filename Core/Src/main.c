@@ -48,6 +48,8 @@ UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
 bq34_info_struct batt_info = {0};
+uint8_t BAT_STBY = 0;
+uint8_t BAT_CHRG = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -92,9 +94,9 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  //MX_GPIO_Init();
-  //MX_USART1_UART_Init();
-  //MX_ADC1_Init();
+  MX_GPIO_Init();
+  MX_USART1_UART_Init();
+  MX_ADC1_Init();
   //MX_I2C2_Init();
 	I2C_Soft_Init();
   /* USER CODE BEGIN 2 */
@@ -111,6 +113,17 @@ int main(void)
   {
     /* USER CODE END WHILE */
 		bq34z100_get_all_info(&batt_info);
+		HAL_ADC_Start(&hadc1);
+		uint16_t adcValue0 = HAL_ADC_GetValue(&hadc1);
+		float adc_prog = (float)adcValue0/4096*2.98*2;
+		SEGGER_RTT_SetTerminal(1);
+		char float_str[80];
+		sprintf(float_str, "ADC CH0=%.3f\r\n", adc_prog);
+		SEGGER_RTT_printf(0, float_str);
+		HAL_UART_Transmit(&huart1, (uint8_t*)float_str, strlen(float_str), HAL_MAX_DELAY);
+		sprintf(float_str, "Ibat = %.3f\r\n", adc_prog/10*1000);
+		HAL_UART_Transmit(&huart1, (uint8_t*)float_str, strlen(float_str), HAL_MAX_DELAY);
+		SEGGER_RTT_printf(0, float_str);
 		//SCL_Test();
 		HAL_Delay(500);
     /* USER CODE BEGIN 3 */
@@ -198,8 +211,8 @@ static void MX_ADC1_Init(void)
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   hadc1.Init.DMAContinuousRequests = DISABLE;
   hadc1.Init.Overrun = ADC_OVR_DATA_PRESERVED;
-  hadc1.Init.SamplingTimeCommon1 = ADC_SAMPLETIME_1CYCLE_5;
-  hadc1.Init.SamplingTimeCommon2 = ADC_SAMPLETIME_1CYCLE_5;
+  hadc1.Init.SamplingTimeCommon1 = ADC_SAMPLETIME_160CYCLES_5;
+  hadc1.Init.SamplingTimeCommon2 = ADC_SAMPLETIME_160CYCLES_5;
   hadc1.Init.OversamplingMode = DISABLE;
   hadc1.Init.TriggerFrequencyMode = ADC_TRIGGER_FREQ_HIGH;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
@@ -209,7 +222,7 @@ static void MX_ADC1_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_2;
+  sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = ADC_REGULAR_RANK_1;
   sConfig.SamplingTime = ADC_SAMPLINGTIME_COMMON_1;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
@@ -219,7 +232,7 @@ static void MX_ADC1_Init(void)
   /* USER CODE BEGIN ADC1_Init 2 */
 
   /* USER CODE END ADC1_Init 2 */
-
+	HAL_ADCEx_Calibration_Start(&hadc1);
 }
 
 /**

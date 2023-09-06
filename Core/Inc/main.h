@@ -30,6 +30,7 @@ extern "C" {
 #include "stm32g0xx_hal.h"
 #include "SEGGER_RTT.h"
 #include <stdio.h>
+#include <string.h>
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
