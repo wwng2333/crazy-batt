@@ -4,6 +4,8 @@
 ".\f\stm32g0xx_it.o"
 ".\f\stm32g0xx_hal_msp.o"
 ".\f\i2c.o"
+".\f\segger_rtt.o"
+".\f\segger_rtt_printf.o"
 ".\f\stm32g0xx_hal_adc.o"
 ".\f\stm32g0xx_hal_adc_ex.o"
 ".\f\stm32g0xx_ll_adc.o"
