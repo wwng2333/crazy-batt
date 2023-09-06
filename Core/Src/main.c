@@ -47,7 +47,7 @@ I2C_HandleTypeDef hi2c2;
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
-uint8_t readBuf[2];
+bq34_info_struct batt_info = {0};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -106,9 +106,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-		readBuf[0] = bq34z100_get_soc();
+		bq34z100_get_all_info(&batt_info);
 		//SCL_Test();
-		HAL_Delay(100);
+		HAL_Delay(500);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

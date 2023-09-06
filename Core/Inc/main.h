@@ -59,7 +59,41 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 
 /* USER CODE BEGIN Private defines */
-
+  typedef struct bq34_info_struct
+  {
+    uint8_t soc;
+    uint16_t remaing_capacity;
+    uint16_t full_charge_capacity;
+    uint16_t voltage;
+    int16_t average_current;
+    int16_t temperature;
+    uint8_t soh;
+    uint16_t time_to_empty;
+    uint16_t time_to_full;
+    uint16_t cycle_count;
+    int16_t recommended_charge_current;
+    union flags
+    {
+      struct bits
+      {
+        uint8_t OTC : 1;
+        uint8_t OTD : 1;
+        uint8_t BATHI : 1;
+        uint8_t BATLOW : 1;
+        uint8_t CHG_INH : 1;
+        uint8_t X_CHG : 1;
+        uint8_t RSVD : 1;
+        uint8_t FC : 1;
+        uint8_t CHG : 1;
+        uint8_t OCVTAKEN : 1;
+        uint8_t ISD : 1;
+        uint8_t SOC1 : 1;
+        uint8_t SOCF : 1;
+        uint8_t DSG : 1;
+      } bits;
+      uint16_t flag_bits;
+    } flags;
+  } bq34_info_struct;
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

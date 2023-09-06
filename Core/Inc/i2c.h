@@ -53,7 +53,7 @@ void SCL_Test(void);
   int16_t bq34z100_get_current(void);
   int16_t bq34z100_get_recommended_charge_current(void);
   uint16_t bq34z100_get_recommended_charge_volt(void);
-	//void bq34z100_get_all_info(bq34_info_struct *info);
+	void bq34z100_get_all_info(bq34_info_struct *info);
 	//void bq34z100_get_packed_batt_info(smart_batt_info_struct *info);
 	void I2C_Soft_Init(void);
   /* USER CODE END Private defines */

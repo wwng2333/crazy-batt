@@ -16,7 +16,7 @@ void I2C_Delay(void)
 {
 	//HAL_Delay(1);
   uint64_t i, j, k;
-  for (i = 0; i < 1000; i++);
+  for (i = 0; i < 500; i++);
 }
 
 #include <stdbool.h>
@@ -462,33 +462,33 @@ uint16_t bq34z100_get_flags(void)
   return flags;
 }
 
-//void bq34z100_get_all_info(bq34_info_struct *info)
-//{
-//  info->average_current = bq34z100_get_average_current();
-//  osDelay(1);
-//  info->cycle_count = bq34z100_get_cycle_count();
-//  osDelay(1);
-//  info->flags.flag_bits = bq34z100_get_flags();
-//  osDelay(1);
-//  info->full_charge_capacity = bq34z100_get_full_charge_capacity();
-//  osDelay(1);
-//  info->recommended_charge_current = bq34z100_get_recommended_charge_current();
-//  osDelay(1);
-//  info->remaing_capacity = bq34z100_get_remaining_capacity();
-//  osDelay(1);
-//  info->soc = bq34z100_get_soc();
-//  osDelay(1);
-//  info->soh = bq34z100_get_soh();
-//  osDelay(1);
-//  info->temperature = bq34z100_get_temperature();
-//  osDelay(1);
-//  info->time_to_empty = bq34z100_get_time_to_empty();
-//  osDelay(1);
-//  info->time_to_full = bq34z100_get_time_to_full();
-//  osDelay(1);
-//  info->voltage = bq34z100_get_voltage();
-//  osDelay(1);
-//}
+void bq34z100_get_all_info(bq34_info_struct *info)
+{
+  info->average_current = bq34z100_get_average_current();
+  HAL_Delay(1);
+  info->cycle_count = bq34z100_get_cycle_count();
+  HAL_Delay(1);
+  info->flags.flag_bits = bq34z100_get_flags();
+  HAL_Delay(1);
+  info->full_charge_capacity = bq34z100_get_full_charge_capacity();
+  HAL_Delay(1);
+  info->recommended_charge_current = bq34z100_get_recommended_charge_current();
+  HAL_Delay(1);
+  info->remaing_capacity = bq34z100_get_remaining_capacity();
+  HAL_Delay(1);
+  info->soc = bq34z100_get_soc();
+  HAL_Delay(1);
+  info->soh = bq34z100_get_soh();
+  HAL_Delay(1);
+  info->temperature = bq34z100_get_temperature();
+  HAL_Delay(1);
+  info->time_to_empty = bq34z100_get_time_to_empty();
+  HAL_Delay(1);
+  info->time_to_full = bq34z100_get_time_to_full();
+  HAL_Delay(1);
+  info->voltage = bq34z100_get_voltage();
+  HAL_Delay(1);
+}
 
 //void bq34z100_get_packed_batt_info(smart_batt_info_struct *info)
 //{
