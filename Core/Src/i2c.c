@@ -14,6 +14,7 @@
 
 void I2C_Delay(void)
 {
+	//Warning: -O0
 	//HAL_Delay(1);
   uint64_t i, j, k;
   for (i = 0; i < 500; i++);
@@ -464,43 +465,51 @@ uint16_t bq34z100_get_flags(void)
 
 void bq34z100_get_all_info(bq34_info_struct *info)
 {
+	char buf[128];
+	SEGGER_RTT_SetTerminal(1);
   info->average_current = bq34z100_get_average_current();
-	SEGGER_RTT_printf(0, "average_current:%d\r\n", info->average_current);
+	SEGGER_RTT_printf(0, "average_current:%dmA\r\n", info->average_current);
   HAL_Delay(1);
   info->cycle_count = bq34z100_get_cycle_count();
 	SEGGER_RTT_printf(0, "cycle_count:%d\r\n", info->cycle_count);
   HAL_Delay(1);
   info->flags.flag_bits = bq34z100_get_flags();
-	SEGGER_RTT_printf(0, "flags:%d\r\n", info->flags.flag_bits);
+	SEGGER_RTT_printf(0, "flags:0x%x\r\n", info->flags.flag_bits);
   HAL_Delay(1);
   info->full_charge_capacity = bq34z100_get_full_charge_capacity();
-	SEGGER_RTT_printf(0, "full_charge_capacity:%d\r\n", info->full_charge_capacity);
+	SEGGER_RTT_printf(0, "full_charge_capacity:%dmAh\r\n", info->full_charge_capacity);
   HAL_Delay(1);
   info->recommended_charge_current = bq34z100_get_recommended_charge_current();
-	SEGGER_RTT_printf(0, "recommended_charge_current:%d\r\n", info->recommended_charge_current);
+	SEGGER_RTT_printf(0, "recommended_charge_current:%dmA\r\n", info->recommended_charge_current);
   HAL_Delay(1);
   info->remaing_capacity = bq34z100_get_remaining_capacity();
-	SEGGER_RTT_printf(0, "remaing_capacity:%d\r\n", info->remaing_capacity);
+	SEGGER_RTT_printf(0, "remaing_capacity:%dmAh\r\n", info->remaing_capacity);
   HAL_Delay(1);
   info->soc = bq34z100_get_soc();
-	SEGGER_RTT_printf(0, "soc:%d\r\n", info->soc);
+	SEGGER_RTT_printf(0, "soc:%d%%\r\n", info->soc);
   HAL_Delay(1);
   info->soh = bq34z100_get_soh();
-	SEGGER_RTT_printf(0, "soh:%d\r\n", info->soh);
+	SEGGER_RTT_printf(0, "soh:%d%%\r\n", info->soh);
   HAL_Delay(1);
   info->temperature = bq34z100_get_temperature();
-	SEGGER_RTT_printf(0, "temperature:%d\r\n", info->temperature);
+	SEGGER_RTT_printf(0, "temperature:%d/0.1K\r\n", info->temperature);
   HAL_Delay(1);
   info->time_to_empty = bq34z100_get_time_to_empty();
-	SEGGER_RTT_printf(0, "time_to_empty:%d\r\n", info->time_to_empty);
+	SEGGER_RTT_printf(0, "time_to_empty:%dmin\r\n", info->time_to_empty);
   HAL_Delay(1);
   info->time_to_full = bq34z100_get_time_to_full();
-	SEGGER_RTT_printf(0, "time_to_full:%d\r\n", info->time_to_full);
+	SEGGER_RTT_printf(0, "time_to_full:%dmin\r\n", info->time_to_full);
   HAL_Delay(1);
   info->voltage = bq34z100_get_voltage();
-	SEGGER_RTT_printf(0, "voltage:%d\r\n", info->voltage);
+	SEGGER_RTT_printf(0, "voltage:%dmV\r\n", info->voltage);
   HAL_Delay(1);
 	SEGGER_RTT_printf(0, "==============================\r\n");
+	SEGGER_RTT_SetTerminal(0);
+	sprintf(buf, "%.3f, %.3f, %.3f\r\n",
+	(float)info->soc,
+	(float)info->voltage/1000,
+	(float)info->average_current);
+	SEGGER_RTT_WriteString(0, buf);
 }
 
 //void bq34z100_get_packed_batt_info(smart_batt_info_struct *info)

@@ -103,7 +103,10 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-	SEGGER_RTT_printf(0, RTT_CTRL_TEXT_GREEN"Hello World from SEGGER, Terminal 1!\r\n");
+	SEGGER_RTT_SetTerminal(0);
+	SEGGER_RTT_ConfigUpBuffer(0, "RTTUP", NULL, 0, SEGGER_RTT_MODE_NO_BLOCK_SKIP);
+	SEGGER_RTT_ConfigDownBuffer(0, "RTTDOWN", NULL, 0, SEGGER_RTT_MODE_NO_BLOCK_SKIP);
+	//SEGGER_RTT_printf(0, RTT_CTRL_TEXT_GREEN"Hello World from SEGGER, Terminal 1!\r\n");
   while (1)
   {
     /* USER CODE END WHILE */

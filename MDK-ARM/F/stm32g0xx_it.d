@@ -40,4 +40,5 @@
   ..\Core\Inc\SEGGER_RTT.h ..\Core\Inc\SEGGER_RTT_Conf.h \
   C:\Keil_ARM\ARM\ARMCLANG\Bin\..\include\stdlib.h \
   C:\Keil_ARM\ARM\ARMCLANG\Bin\..\include\stdarg.h \
+  C:\Keil_ARM\ARM\ARMCLANG\Bin\..\include\stdio.h \
   ..\Core\Inc\stm32g0xx_it.h
