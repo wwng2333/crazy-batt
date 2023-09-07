@@ -179,12 +179,16 @@ uint16_t ADC_ReadCH(void)
 
 void ADC_Read(hadc_result *result)
 {
-	result->ch0 = ADC_ReadCH();
-	result->ch2 = ADC_ReadCH();
-	result->ch3 = ADC_ReadCH();
-	result->ch6 = ADC_ReadCH();
-	result->temp = ADC_ReadCH();
-	result->vref = ADC_ReadCH();
+	result->vref = __HAL_ADC_CALC_VREFANALOG_VOLTAGE(
+		ADC_ReadCH(), ADC_RESOLUTION_12B);
+	result->ch0 = __HAL_ADC_CALC_DATA_TO_VOLTAGE(result->vref, ADC_ReadCH(), ADC_RESOLUTION_12B);
+	result->ch2 = __HAL_ADC_CALC_DATA_TO_VOLTAGE(result->vref, ADC_ReadCH(), ADC_RESOLUTION_12B);
+	result->ch3 = __HAL_ADC_CALC_DATA_TO_VOLTAGE(result->vref, ADC_ReadCH(), ADC_RESOLUTION_12B);
+	result->ch6 = __HAL_ADC_CALC_DATA_TO_VOLTAGE(result->vref, ADC_ReadCH(), ADC_RESOLUTION_12B);
+	result->temp = __HAL_ADC_CALC_TEMPERATURE(
+									result->vref, 
+									ADC_ReadCH(),
+									ADC_RESOLUTION_12B);
 }
 
 /**
@@ -234,7 +238,7 @@ static void MX_ADC1_Init(void)
   /** Configure Regular Channel
   */
   sConfig.Channel = ADC_CHANNEL_0;
-  sConfig.Rank = ADC_REGULAR_RANK_1;
+  sConfig.Rank = ADC_REGULAR_RANK_2;
   sConfig.SamplingTime = ADC_SAMPLINGTIME_COMMON_1;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
@@ -244,15 +248,6 @@ static void MX_ADC1_Init(void)
   /** Configure Regular Channel
   */
   sConfig.Channel = ADC_CHANNEL_2;
-  sConfig.Rank = ADC_REGULAR_RANK_2;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  /** Configure Regular Channel
-  */
-  sConfig.Channel = ADC_CHANNEL_3;
   sConfig.Rank = ADC_REGULAR_RANK_3;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
@@ -261,7 +256,7 @@ static void MX_ADC1_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_6;
+  sConfig.Channel = ADC_CHANNEL_3;
   sConfig.Rank = ADC_REGULAR_RANK_4;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
@@ -270,7 +265,7 @@ static void MX_ADC1_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_TEMPSENSOR;
+  sConfig.Channel = ADC_CHANNEL_6;
   sConfig.Rank = ADC_REGULAR_RANK_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
@@ -279,8 +274,17 @@ static void MX_ADC1_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_VREFINT;
+  sConfig.Channel = ADC_CHANNEL_TEMPSENSOR;
   sConfig.Rank = ADC_REGULAR_RANK_6;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_VREFINT;
+  sConfig.Rank = ADC_REGULAR_RANK_1;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
