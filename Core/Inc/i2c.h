@@ -37,7 +37,7 @@ extern "C"
 
 #define BIG_LITTLE_SWAP16(x) ((((*(uint16_t *)&x) & 0xff00) >> 8) | \
                               (((*(uint16_t *)&x) & 0x00ff) << 8))
-void SCL_Test(void);
+	void SCL_Test(void);
   void bq34z100_IT_enable(void);
   int bq34_read(uint8_t cmd, uint8_t len);
   uint8_t bq34z100_get_soc(void);
@@ -56,6 +56,9 @@ void SCL_Test(void);
 	void bq34z100_get_all_info(bq34_info_struct *info);
 	//void bq34z100_get_packed_batt_info(smart_batt_info_struct *info);
 	void I2C_Soft_Init(void);
+	int16_t bq34z100_get_standby_current(void);
+	uint16_t bq34z100_get_internal_temp(void);
+ 
   /* USER CODE END Private defines */
 
   /* USER CODE BEGIN Prototypes */

@@ -2,6 +2,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "i2c.h"
+#include "SEGGER_RTT.h"
 #include "stm32g0xx_hal.h"
 //#include "cmsis_os2.h"
 #include <stdbool.h>
@@ -432,6 +433,22 @@ int16_t bq34z100_get_current(void)
   return current;
 }
 
+int16_t bq34z100_get_standby_current(void)
+{
+  uint8_t cmd = 0x1C;
+  int16_t standby_current = 0;
+	I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t*)&standby_current, 2);
+  return standby_current;
+}
+
+uint16_t bq34z100_get_internal_temp(void)
+{
+  uint8_t cmd = 0x2A;
+  int16_t internal_temp = 0;
+	I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t*)&internal_temp, 2);
+  return internal_temp;
+}
+
 uint16_t bq34z100_get_cycle_count(void)
 {
   uint8_t cmd = 0x2C;
@@ -502,6 +519,12 @@ void bq34z100_get_all_info(bq34_info_struct *info)
   HAL_Delay(1);
   info->voltage = bq34z100_get_voltage();
 	SEGGER_RTT_printf(0, "voltage:%dmV\r\n", info->voltage);
+  HAL_Delay(1);
+  info->standby_current = bq34z100_get_standby_current();
+	SEGGER_RTT_printf(0, "standby_current:%dmA\r\n", info->standby_current);
+  HAL_Delay(1);
+  info->internal_temp = bq34z100_get_internal_temp();
+	SEGGER_RTT_printf(0, "internal_temp:%d/0.1K\r\n", info->internal_temp);
   HAL_Delay(1);
 	SEGGER_RTT_printf(0, "==============================\r\n");
 	SEGGER_RTT_SetTerminal(0);

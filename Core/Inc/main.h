@@ -28,7 +28,6 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32g0xx_hal.h"
-#include "SEGGER_RTT.h"
 #include <stdio.h>
 #include <string.h>
 /* Private includes ----------------------------------------------------------*/
@@ -74,6 +73,8 @@ void Error_Handler(void);
     uint16_t time_to_full;
     uint16_t cycle_count;
     int16_t recommended_charge_current;
+    int16_t standby_current;
+    uint16_t internal_temp;
     union flags
     {
       struct bits
