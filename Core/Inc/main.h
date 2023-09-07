@@ -97,6 +97,16 @@ void Error_Handler(void);
       uint16_t flag_bits;
     } flags;
   } bq34_info_struct;
+	
+	typedef struct hadc_result
+  {
+    uint16_t ch0;
+    uint16_t ch2;
+    uint16_t ch3;
+    uint16_t ch6;
+    uint16_t temp;
+    uint16_t vref;
+  } hadc_result;
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

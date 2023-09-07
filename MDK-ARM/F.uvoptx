@@ -163,12 +163,7 @@
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>BAT_STBY</ItemText>
-        </Ww>
-        <Ww>
-          <count>2</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>BAT_CHRG</ItemText>
+          <ItemText>adc_result,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
