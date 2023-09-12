@@ -1,24 +1,25 @@
-  /* USER CODE BEGIN Header */
+/* USER CODE BEGIN Header */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "i2c.h"
 #include "SEGGER_RTT.h"
 #include "stm32g0xx_hal.h"
-//#include "cmsis_os2.h"
+// #include "cmsis_os2.h"
 #include <stdbool.h>
 
 #define I2C_WRITE 0
 #define I2C_READ 1
 #define BQ34_ADDR 0xAA
 
-//extern power_running_state_enum power_mos_state;
+// extern power_running_state_enum power_mos_state;
 
 void I2C_Delay(void)
 {
-	//Warning: -O0
-	//HAL_Delay(1);
+  // Warning: -O0
+  // HAL_Delay(1);
   uint64_t i, j, k;
-  for (i = 0; i < 500; i++);
+  for (i = 0; i < 500; i++)
+    ;
 }
 
 #include <stdbool.h>
@@ -52,43 +53,43 @@ bool I2C_CheckDevice(uint8_t SlaveAddress);
 
 void SCL_Test(void)
 {
-	I2C_GPIO_PORT->ODR &= ~Pin_SCL;
-	I2C_GPIO_PORT->ODR &= ~Pin_SDA;
-	HAL_Delay(100);
-	I2C_GPIO_PORT->ODR |= Pin_SCL;
-	I2C_GPIO_PORT->ODR |= Pin_SDA;
-	HAL_Delay(100);
-	I2C_GPIO_PORT->ODR &= ~Pin_SCL;
-	I2C_GPIO_PORT->ODR &= ~Pin_SDA;
+  I2C_GPIO_PORT->ODR &= ~Pin_SCL;
+  I2C_GPIO_PORT->ODR &= ~Pin_SDA;
+  HAL_Delay(100);
+  I2C_GPIO_PORT->ODR |= Pin_SCL;
+  I2C_GPIO_PORT->ODR |= Pin_SDA;
+  HAL_Delay(100);
+  I2C_GPIO_PORT->ODR &= ~Pin_SCL;
+  I2C_GPIO_PORT->ODR &= ~Pin_SDA;
 }
 
 void I2C_Soft_Init(void)
 {
-//  LL_GPIO_InitTypeDef GPIO_InitStructure; // ??GPIO???
+  //  LL_GPIO_InitTypeDef GPIO_InitStructure; // ??GPIO???
 
-//  LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOB);
+  //  LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOB);
 
-//  GPIO_InitStructure.Mode = LL_GPIO_MODE_OUTPUT;
-//  GPIO_InitStructure.OutputType = LL_GPIO_OUTPUT_OPENDRAIN;
-//  GPIO_InitStructure.Pin = Pin_SCL | Pin_SDA;
-//  GPIO_InitStructure.Pull = LL_GPIO_PULL_UP;
-//  GPIO_InitStructure.Speed = LL_GPIO_SPEED_LOW;
-//  LL_GPIO_Init(I2C_GPIO_PORT, &GPIO_InitStructure);
+  //  GPIO_InitStructure.Mode = LL_GPIO_MODE_OUTPUT;
+  //  GPIO_InitStructure.OutputType = LL_GPIO_OUTPUT_OPENDRAIN;
+  //  GPIO_InitStructure.Pin = Pin_SCL | Pin_SDA;
+  //  GPIO_InitStructure.Pull = LL_GPIO_PULL_UP;
+  //  GPIO_InitStructure.Speed = LL_GPIO_SPEED_LOW;
+  //  LL_GPIO_Init(I2C_GPIO_PORT, &GPIO_InitStructure);
 
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-/* USER CODE BEGIN MX_GPIO_Init_1 */
-/* USER CODE END MX_GPIO_Init_1 */
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+  /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pins : PA7 PA8 */
-  GPIO_InitStruct.Pin = GPIO_PIN_11|GPIO_PIN_12;
+  GPIO_InitStruct.Pin = GPIO_PIN_11 | GPIO_PIN_12;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-	
+
   I2C_Stop();
 }
 
@@ -108,7 +109,7 @@ bool I2C_Start(void)
 
 bool I2C_Stop(void)
 {
-	Pin_SDA_L;
+  Pin_SDA_L;
   Pin_SCL_H;
   I2C_Delay();
   if (Read_SDA_Pin)
@@ -357,7 +358,7 @@ uint8_t bq34z100_get_soc(void)
 {
   uint8_t soc = 0;
   uint8_t cmd = 0x02;
-	I2C_Read_NByte(BQ34_ADDR, cmd, &soc, 1);
+  I2C_Read_NByte(BQ34_ADDR, cmd, &soc, 1);
   return soc;
 }
 
@@ -365,7 +366,7 @@ uint16_t bq34z100_get_remaining_capacity(void)
 {
   uint8_t cmd = 0x04;
   uint16_t remaining_capacity = 0;
-	I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t*)&remaining_capacity, 2);
+  I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t *)&remaining_capacity, 2);
   return remaining_capacity;
 }
 
@@ -373,7 +374,7 @@ uint16_t bq34z100_get_full_charge_capacity(void)
 {
   uint8_t cmd = 0x06;
   uint16_t full_charge_capacity = 0;
-	I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t*)&full_charge_capacity, 2);
+  I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t *)&full_charge_capacity, 2);
   return full_charge_capacity;
 }
 
@@ -381,7 +382,7 @@ uint16_t bq34z100_get_voltage(void)
 {
   uint8_t cmd = 0x08;
   uint16_t voltage = 0;
-	I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t*)&voltage, 2);
+  I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t *)&voltage, 2);
   return voltage;
 }
 
@@ -389,7 +390,7 @@ int16_t bq34z100_get_average_current(void)
 {
   uint8_t cmd = 0x0A;
   int16_t current = 0;
-	I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t*)&current, 2);
+  I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t *)&current, 2);
   return current;
 }
 
@@ -397,7 +398,7 @@ int16_t bq34z100_get_temperature(void)
 {
   uint8_t cmd = 0x0C;
   int16_t temperature = 0;
-	I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t*)&temperature, 2);
+  I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t *)&temperature, 2);
   return temperature;
 }
 
@@ -405,7 +406,7 @@ uint8_t bq34z100_get_soh(void)
 {
   uint8_t cmd = 0x2E;
   uint8_t soh = 0;
-	I2C_Read_NByte(BQ34_ADDR, cmd, &soh, 1);
+  I2C_Read_NByte(BQ34_ADDR, cmd, &soh, 1);
   return soh;
 }
 
@@ -413,7 +414,7 @@ uint16_t bq34z100_get_time_to_empty(void)
 {
   uint8_t cmd = 0x18;
   uint16_t time_to_empty = 0;
-	I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t*)&time_to_empty, 2);
+  I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t *)&time_to_empty, 2);
   return time_to_empty;
 }
 
@@ -421,7 +422,7 @@ uint16_t bq34z100_get_time_to_full(void)
 {
   uint8_t cmd = 0x1A;
   uint16_t time_to_full = 0;
-	I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t*)&time_to_full, 2);
+  I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t *)&time_to_full, 2);
   return time_to_full;
 }
 
@@ -429,7 +430,7 @@ int16_t bq34z100_get_current(void)
 {
   uint8_t cmd = 0x10;
   int16_t current = 0;
-	I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t*)&current, 2);
+  I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t *)&current, 2);
   return current;
 }
 
@@ -437,7 +438,7 @@ int16_t bq34z100_get_standby_current(void)
 {
   uint8_t cmd = 0x1C;
   int16_t standby_current = 0;
-	I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t*)&standby_current, 2);
+  I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t *)&standby_current, 2);
   return standby_current;
 }
 
@@ -445,7 +446,7 @@ uint16_t bq34z100_get_internal_temp(void)
 {
   uint8_t cmd = 0x2A;
   int16_t internal_temp = 0;
-	I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t*)&internal_temp, 2);
+  I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t *)&internal_temp, 2);
   return internal_temp;
 }
 
@@ -453,7 +454,7 @@ uint16_t bq34z100_get_cycle_count(void)
 {
   uint8_t cmd = 0x2C;
   uint16_t cycle_count = 0;
-	I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t*)&cycle_count, 2);
+  I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t *)&cycle_count, 2);
   return cycle_count;
 }
 
@@ -461,7 +462,7 @@ uint16_t bq34z100_get_recommended_charge_volt(void)
 {
   uint8_t cmd = 0x30;
   uint16_t charge_volt = 0;
-	I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t*)&charge_volt, 2);
+  I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t *)&charge_volt, 2);
   return charge_volt;
 }
 
@@ -469,97 +470,97 @@ int16_t bq34z100_get_recommended_charge_current(void)
 {
   uint8_t cmd = 0x32;
   int16_t charge_current = 0;
-	I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t*)&charge_current, 2);
+  I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t *)&charge_current, 2);
   return charge_current;
 }
 uint16_t bq34z100_get_flags(void)
 {
   uint8_t cmd = 0x0E;
   uint16_t flags = 0;
-	I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t*)&flags, 2);
+  I2C_Read_NByte(BQ34_ADDR, cmd, (uint8_t *)&flags, 2);
   return flags;
 }
 
 void bq34z100_get_all_info(bq34_info_struct *info)
 {
-	char buf[128];
-	SEGGER_RTT_SetTerminal(1);
+  char buf[128];
+  SEGGER_RTT_SetTerminal(1);
   info->average_current = bq34z100_get_average_current();
-	SEGGER_RTT_printf(0, "average_current:%dmA\r\n", info->average_current);
+  SEGGER_RTT_printf(0, "average_current:%dmA\r\n", info->average_current);
   HAL_Delay(1);
   info->cycle_count = bq34z100_get_cycle_count();
-	SEGGER_RTT_printf(0, "cycle_count:%d\r\n", info->cycle_count);
+  SEGGER_RTT_printf(0, "cycle_count:%d\r\n", info->cycle_count);
   HAL_Delay(1);
   info->flags.flag_bits = bq34z100_get_flags();
-	SEGGER_RTT_printf(0, "flags:0x%x\r\n", info->flags.flag_bits);
+  SEGGER_RTT_printf(0, "flags:0x%x\r\n", info->flags.flag_bits);
   HAL_Delay(1);
   info->full_charge_capacity = bq34z100_get_full_charge_capacity();
-	SEGGER_RTT_printf(0, "full_charge_capacity:%dmAh\r\n", info->full_charge_capacity);
+  SEGGER_RTT_printf(0, "full_charge_capacity:%dmAh\r\n", info->full_charge_capacity);
   HAL_Delay(1);
   info->recommended_charge_current = bq34z100_get_recommended_charge_current();
-	SEGGER_RTT_printf(0, "recommended_charge_current:%dmA\r\n", info->recommended_charge_current);
+  SEGGER_RTT_printf(0, "recommended_charge_current:%dmA\r\n", info->recommended_charge_current);
   HAL_Delay(1);
   info->remaing_capacity = bq34z100_get_remaining_capacity();
-	SEGGER_RTT_printf(0, "remaing_capacity:%dmAh\r\n", info->remaing_capacity);
+  SEGGER_RTT_printf(0, "remaing_capacity:%dmAh\r\n", info->remaing_capacity);
   HAL_Delay(1);
   info->soc = bq34z100_get_soc();
-	SEGGER_RTT_printf(0, "soc:%d%%\r\n", info->soc);
+  SEGGER_RTT_printf(0, "soc:%d%%\r\n", info->soc);
   HAL_Delay(1);
   info->soh = bq34z100_get_soh();
-	SEGGER_RTT_printf(0, "soh:%d%%\r\n", info->soh);
+  SEGGER_RTT_printf(0, "soh:%d%%\r\n", info->soh);
   HAL_Delay(1);
   info->temperature = bq34z100_get_temperature();
-	SEGGER_RTT_printf(0, "temperature:%d/0.1K\r\n", info->temperature);
+  SEGGER_RTT_printf(0, "temperature:%d/0.1K\r\n", info->temperature);
   HAL_Delay(1);
   info->time_to_empty = bq34z100_get_time_to_empty();
-	SEGGER_RTT_printf(0, "time_to_empty:%dmin\r\n", info->time_to_empty);
+  SEGGER_RTT_printf(0, "time_to_empty:%dmin\r\n", info->time_to_empty);
   HAL_Delay(1);
   info->time_to_full = bq34z100_get_time_to_full();
-	SEGGER_RTT_printf(0, "time_to_full:%dmin\r\n", info->time_to_full);
+  SEGGER_RTT_printf(0, "time_to_full:%dmin\r\n", info->time_to_full);
   HAL_Delay(1);
   info->voltage = bq34z100_get_voltage();
-	SEGGER_RTT_printf(0, "voltage:%dmV\r\n", info->voltage);
+  SEGGER_RTT_printf(0, "voltage:%dmV\r\n", info->voltage);
   HAL_Delay(1);
   info->standby_current = bq34z100_get_standby_current();
-	SEGGER_RTT_printf(0, "standby_current:%dmA\r\n", info->standby_current);
+  SEGGER_RTT_printf(0, "standby_current:%dmA\r\n", info->standby_current);
   HAL_Delay(1);
   info->internal_temp = bq34z100_get_internal_temp();
-	SEGGER_RTT_printf(0, "internal_temp:%d/0.1K\r\n", info->internal_temp);
+  SEGGER_RTT_printf(0, "internal_temp:%d/0.1K\r\n", info->internal_temp);
   HAL_Delay(1);
-	SEGGER_RTT_printf(0, "==============================\r\n");
-	SEGGER_RTT_SetTerminal(0);
-	sprintf(buf, "%.3f, %.3f, %.3f\r\n",
-	(float)info->soc,
-	(float)info->voltage/1000,
-	(float)info->average_current);
-	SEGGER_RTT_WriteString(0, buf);
+  SEGGER_RTT_printf(0, "==============================\r\n");
+  SEGGER_RTT_SetTerminal(0);
+  sprintf(buf, "%.3f, %.3f, %.3f\r\n",
+          (float)info->soc,
+          (float)info->voltage / 1000,
+          (float)info->average_current);
+  SEGGER_RTT_WriteString(0, buf);
 }
 
-//void bq34z100_get_packed_batt_info(smart_batt_info_struct *info)
+// void bq34z100_get_packed_batt_info(smart_batt_info_struct *info)
 //{
-//  info->head = 0x55;
-//  info->tail = 0xAA;
-//  info->batt_state = power_mos_state;
-//  info->cmd_type = BATT_INFO_CMD;
-//  info->data_len = (sizeof(smart_batt_info_struct) / sizeof(uint8_t));
-//  info->average_current = bq34z100_get_average_current();
-//  osDelay(1);
-//  info->cycle_count = bq34z100_get_cycle_count();
-//  osDelay(1);
-//  info->full_charge_capacity = bq34z100_get_full_charge_capacity();
-//  ;
-//  osDelay(1);
-//  info->remaing_capacity = bq34z100_get_remaining_capacity();
-//  osDelay(1);
-//  info->soc = bq34z100_get_soc();
-//  osDelay(1);
-//  info->soh = bq34z100_get_soh();
-//  osDelay(1);
-//  info->temperature = bq34z100_get_temperature();
-//  osDelay(1);
-//  info->time_to_empty = bq34z100_get_time_to_empty();
-//  osDelay(1);
-//  info->time_to_full = bq34z100_get_time_to_full();
-//  osDelay(1);
-//  info->voltage = bq34z100_get_voltage();
-//}
+//   info->head = 0x55;
+//   info->tail = 0xAA;
+//   info->batt_state = power_mos_state;
+//   info->cmd_type = BATT_INFO_CMD;
+//   info->data_len = (sizeof(smart_batt_info_struct) / sizeof(uint8_t));
+//   info->average_current = bq34z100_get_average_current();
+//   osDelay(1);
+//   info->cycle_count = bq34z100_get_cycle_count();
+//   osDelay(1);
+//   info->full_charge_capacity = bq34z100_get_full_charge_capacity();
+//   ;
+//   osDelay(1);
+//   info->remaing_capacity = bq34z100_get_remaining_capacity();
+//   osDelay(1);
+//   info->soc = bq34z100_get_soc();
+//   osDelay(1);
+//   info->soh = bq34z100_get_soh();
+//   osDelay(1);
+//   info->temperature = bq34z100_get_temperature();
+//   osDelay(1);
+//   info->time_to_empty = bq34z100_get_time_to_empty();
+//   osDelay(1);
+//   info->time_to_full = bq34z100_get_time_to_full();
+//   osDelay(1);
+//   info->voltage = bq34z100_get_voltage();
+// }
